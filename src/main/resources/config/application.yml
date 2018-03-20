@@ -1,0 +1,18 @@
+spring:
+  dbhandlers:
+    dynamodb:
+      articletablename: test-phenomics-articles
+      annotationtablename: test-phenomics-annotations
+      subscriptiontablename: test-phenomics-subscriptions
+
+logging:
+  path: ./logs/
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %p | source= %c{1.} | %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %p | stackName=phenomics | appName=affinity | source= %c{1.} | %msg%n"
+  level:
+    root: WARN
+    au.org.garvan.kccg.annotations.pipeline: INFO
+
+server:
+    port: 9020
