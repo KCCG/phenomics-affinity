@@ -4,11 +4,11 @@ import au.org.garvan.kccg.affinity.engine.OntologyQueriesLoader.OntologyQueriesL
 import au.org.garvan.kccg.affinity.model.AnnotationHit;
 import au.org.garvan.kccg.affinity.model.AnnotationTerm;
 import au.org.garvan.kccg.affinity.model.Article;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.store.RAMDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.co.flax.luwak.InputDocument;
 import uk.co.flax.luwak.Monitor;
@@ -27,24 +27,20 @@ import static java.lang.String.format;
 @Service
 public class AffinityLuwakSearchEngine {
 
-    protected static final Logger log = LoggerFactory.getLogger(AffinityLuwakSearchEngine.class);
     public static final String DEFAULT_FIELD = "article_abstract";
     public static final String QUERY_BANK_FILTER = "query_bank";
-
+    protected static final Logger log = LoggerFactory.getLogger(AffinityLuwakSearchEngine.class);
+//    @Autowired
+//    OntologyQueriesLoader ontologyQueriesLoader;
     private Monitor masterLuwakMonitor;
-
     private PartitionMatcher.PartitionMatcherFactory<HighlightsMatch> defaultHighlighterMatcher;
     private StandardAnalyzer standardAnalyzer;
 
-
-    @Autowired
-    OntologyQueriesLoader ontologyQueriesLoader;
-
     public AffinityLuwakSearchEngine() {
         log.info("Affinity Search Engine initializing");
-        standardAnalyzer = new StandardAnalyzer();
+        standardAnalyzer = new StandardAnalyzer( CharArraySet.EMPTY_SET);
         masterLuwakMonitor = configuredMonitor();
-        defaultHighlighterMatcher  =
+        defaultHighlighterMatcher =
                 PartitionMatcher.factory(
                         Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()),
                         HighlightingMatcher.FACTORY,
@@ -89,12 +85,19 @@ public class AffinityLuwakSearchEngine {
                                         try {
                                             AnnotationHit tempHit = new AnnotationHit();
                                             tempHit.setAnnotationID(match.getQueryId());
-                                            Set hits  =   match.getHits().get(DEFAULT_FIELD);
-                                            for (Object hitObj : hits) {
-                                                HighlightsMatch.Hit hit = (HighlightsMatch.Hit) hitObj;
-                                                AnnotationTerm tempTerm = new AnnotationTerm(hit.startPosition,hit.endPosition, hit.startOffset, hit.endOffset);
+                                            if (match.error == null) {
+                                                Set hits = match.getHits().get(DEFAULT_FIELD);
+                                                for (Object hitObj : hits) {
+                                                    HighlightsMatch.Hit hit = (HighlightsMatch.Hit) hitObj;
+                                                    AnnotationTerm tempTerm = new AnnotationTerm(hit.startPosition, hit.endPosition, hit.startOffset, hit.endOffset);
+                                                    tempHit.getHits().add(tempTerm);
+                                                }
+                                            }
+                                            else {
+                                                AnnotationTerm tempTerm = new AnnotationTerm(-1, -1, -1, -1);
                                                 tempHit.getHits().add(tempTerm);
                                             }
+
                                             annotationHits.add(tempHit);
 
                                         } catch (Exception e) {
@@ -105,10 +108,7 @@ public class AffinityLuwakSearchEngine {
                         }
                     });
 
-            log.info("Matched Article ID:" + anArticle.getArticleID() + ", having language:"
-                    + anArticle.getLanguage()
-                    + " with Annotations Count:" + String.valueOf(annotationHits.size())
-                    + Integer.toString(masterLuwakMonitor.getQueryCount()));
+            log.info( format("Artticle ID:%s matched with total diseases:%d. Queries count:%d", anArticle.getArticleID(), annotationHits.size(),masterLuwakMonitor.getQueryCount() ));
 
             return annotationHits;
 
@@ -123,6 +123,15 @@ public class AffinityLuwakSearchEngine {
         List<QueryError> errors = queryLoader.loadQueries(masterLuwakMonitor);
         errors.forEach(error -> log.error(format("Annotation Queries %s could not be loaded", error.query)));
         return errors;
+    }
+
+    public void close() {
+        try {
+            masterLuwakMonitor.close();
+        } catch (IOException e) {
+            log.error("Error closing Monitor ", e);
+            throw new RuntimeException(e);
+        }
     }
 
 

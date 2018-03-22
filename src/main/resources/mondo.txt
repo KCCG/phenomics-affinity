@@ -10953,8 +10953,7 @@ MONDO:0018227:::"hypocomplementemic urticarial vasculitis" OR "Mac Duffie hypoco
 MONDO:0019558:::"discoid lupus erythematosus"
 MONDO:0020535:::"house allergic alveolitis"
 MONDO:0018229:::"Stevens-Johnson syndrome" OR "Stevens Johnson Syndrome" OR "Hypersensitivity Syndrome, Carbamazepine-Induced, Susceptibility to" OR "Dermatostomatitis, Stevens Johnson type" OR "Stevens-Johnson Syndrome, Susceptibility to" OR "Toxic Epidermal Necrolysis, Susceptibility to" OR "Erythema Multiforme Major"
-MONDO:0018224:::"hydroa vacciniforme-like lymphoma" OR "Hydroa Vacciniforme-Like Lymphoproliferative Disorder" OR "Hydroa Vacciniforme-Like Lymphoproliferative
-Disorder" OR "Hydroa Vacciniforme-Like Lymphoma" OR "HV-Like Lymphoma" OR "Hydroa Vacciniforme-Like Cutaneous T-Cell Lymphoma"
+MONDO:0018224:::"hydroa vacciniforme-like lymphoma" OR "Hydroa Vacciniforme-Like Lymphoproliferative Disorder" OR "Hydroa Vacciniforme-Like Lymphoproliferative Disorder" OR "Hydroa Vacciniforme-Like Lymphoma" OR "HV-Like Lymphoma" OR "Hydroa Vacciniforme-Like Cutaneous T-Cell Lymphoma"
 MONDO:0019555:::"panniculitis and localized lipodystrophy"
 MONDO:0018223:::"systemic Epstein-Barr virus-positive T-cell lymphoproliferative disease of childhood" OR "Systemic EBV-positive T-cell lymphoproliferative disease of childhood" OR "Systemic EBV-Positive T-Cell Lymphoproliferative Disorder of Childhood" OR "Systemic EBV-Positive T-Cell Lymphoma of Childhood" OR "Systemic EBV+ T-cell LPD of childhood"
 MONDO:0019554:::"idiopathic localized lipodystrophy"

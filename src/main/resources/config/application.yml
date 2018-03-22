@@ -12,7 +12,7 @@ logging:
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %p | stackName=phenomics | appName=affinity | source= %c{1.} | %msg%n"
   level:
     root: WARN
-    au.org.garvan.kccg.annotations.pipeline: INFO
+    au.org.garvan.kccg.affinity: INFO
 
 server:
     port: 9020
