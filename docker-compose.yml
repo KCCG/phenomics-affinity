@@ -1,0 +1,16 @@
+---
+version: '2'
+services:
+  affinity:
+    build:
+      context: .
+    working_dir: /usr/src/app
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+    ports:
+      - "9020:9020"
+    volumes:
+      - ~/.m2:/root/.m2
+      - .:/usr/src/app
