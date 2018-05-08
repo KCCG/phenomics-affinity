@@ -69,7 +69,7 @@ task buildDocker(type: Docker) {
 task buildDockerProd(type: Docker) {
     baseImage = 'develar/java:latest'
     push = project.hasProperty('push')
-    tag = 'phenomics-afinity-prod'
+    tag = 'phenomics-affinity-prod'
     addFile {
         from jar
         rename {'app.jar'}
