@@ -46,8 +46,8 @@ public class AffinityApplication {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Phenomics Affinity")
-                .description("<p>This service is part of concept mining framework.</p> <p> It is responsible for tagging diseases. ")
-                .version("Beta 1.0")
+                .description("<p>This service is part of concept mining framework.</p> <p> It is responsible for tagging diseases for the time being. ")
+                .version("V1.0")
                 .build();
     }
 

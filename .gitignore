@@ -7,7 +7,10 @@
 *.swp
 *.jar
 *.pyc
+
 *.json
+!/devOps/Ecs/*.json
+
 *.DS_Store
 
 src/main/resources/phenotypeCR/
@@ -16,9 +19,7 @@ logs/
 target/
 build/
 out/
-Analysis/
 
-db_files/
 libs/
 
 

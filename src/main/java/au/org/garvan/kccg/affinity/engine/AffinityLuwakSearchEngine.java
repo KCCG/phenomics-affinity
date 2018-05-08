@@ -36,6 +36,7 @@ public class AffinityLuwakSearchEngine {
     private PartitionMatcher.PartitionMatcherFactory<HighlightsMatch> defaultHighlighterMatcher;
     private StandardAnalyzer standardAnalyzer;
 
+
     public AffinityLuwakSearchEngine() {
         log.info("Affinity Search Engine initializing");
         standardAnalyzer = new StandardAnalyzer( CharArraySet.EMPTY_SET);
@@ -108,7 +109,7 @@ public class AffinityLuwakSearchEngine {
                         }
                     });
 
-            log.info( format("Artticle ID:%s matched with total diseases:%d. Queries count:%d", anArticle.getArticleID(), annotationHits.size(),masterLuwakMonitor.getQueryCount() ));
+            log.info( format("Article ID:%s matched with total matched queries:%d. Total queries count:%d", anArticle.getArticleID(), annotationHits.size(),masterLuwakMonitor.getQueryCount() ));
 
             return annotationHits;
 

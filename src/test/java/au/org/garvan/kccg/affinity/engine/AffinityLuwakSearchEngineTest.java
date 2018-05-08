@@ -31,8 +31,8 @@ public class AffinityLuwakSearchEngineTest {
 
     @Test
     public void matchSimplePhrase() {
-        String queryId = dispatchQuery("Test1", "Pain in Chest");
-        Article anArticle = new Article("PMID:1", "I am feeling pain in chest.", "en");
+        String queryId = dispatchQuery("Test1", "ICPH");
+        Article anArticle = new Article("PMID:1", "I am feeling pain in icph chest.", "en");
 
         List<AnnotationHit> results = engine.matchDocument(anArticle);
         System.out.println("");
