@@ -78,4 +78,16 @@ task buildDockerProd(type: Docker) {
     exposePort(9020)
 }
 
+task buildDockerDev(type: Docker) {
+    baseImage = 'develar/java:latest'
+    push = project.hasProperty('push')
+    tag = 'phenomics-affinity-dev'
+    addFile {
+        from jar
+        rename {'app.jar'}
+    }
+    entryPoint(['java', '-Djava.security.egd=file:/dev/./urandom',  '-Dspring.profiles.active=dev', '-jar', '/app.jar' ])
+    exposePort(9020)
+}
+
 buildDocker.dependsOn(build)
