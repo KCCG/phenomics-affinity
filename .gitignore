@@ -8,6 +8,9 @@
 *.jar
 *.pyc
 
+
+!/gradle/wrapper/*.jar
+
 *.json
 !/devOps/Ecs/*.json
 
