@@ -29,7 +29,7 @@
       "memory": 2048,
       "memoryReservation": null,
       "volumesFrom": [],
-      "image": "482667004524.dkr.ecr.ap-southeast-2.amazonaws.com/phenomics:affinity-latest",
+      "image": "254144944163.dkr.ecr.ap-southeast-2.amazonaws.com/phenomics-dev:affinity-latest",
       "disableNetworking": null,
       "essential": true,
       "links": null,
@@ -39,11 +39,11 @@
       "readonlyRootFilesystem": null,
       "dockerLabels": null,
       "privileged": null,
-      "name": "phenomics-affinity-container"
+      "name": "phenomics-affinity-dev-container"
     }
   ],
   "taskRoleArn": null,
-  "family": "phenomics-affinity-task-v1",
+  "family": "phenomics-affinity-dev-task-v1",
   "networkMode": null,
   "volumes": [
     {
