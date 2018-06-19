@@ -10,10 +10,7 @@ import org.apache.lucene.store.RAMDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import uk.co.flax.luwak.InputDocument;
-import uk.co.flax.luwak.Monitor;
-import uk.co.flax.luwak.QueryError;
-import uk.co.flax.luwak.QueryIndexConfiguration;
+import uk.co.flax.luwak.*;
 import uk.co.flax.luwak.matchers.*;
 import uk.co.flax.luwak.presearcher.MatchAllPresearcher;
 import uk.co.flax.luwak.queryparsers.LuceneQueryParser;
@@ -111,11 +108,26 @@ public class AffinityLuwakSearchEngine {
 
             log.info( format("Article ID:%s matched with total matched queries:%d. Total queries count:%d", anArticle.getArticleID(), annotationHits.size(),masterLuwakMonitor.getQueryCount() ));
 
+            //DEBUG
+//            logHitDetails(annotationHits);
+
             return annotationHits;
 
         } catch (RuntimeException | IOException ex) {
             log.error("Error matching", ex);
             throw new RuntimeException(ex);
+        }
+    }
+
+    private void logHitDetails(List<AnnotationHit> annotationHits){
+        for (AnnotationHit hit: annotationHits){
+            try {
+                MonitorQuery query =  masterLuwakMonitor.getQuery(hit.getAnnotationID());
+                log.info(String.format("[Matched Queries]\nID:%s\nQuery:%s\n", query.getId(), query.getQuery()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

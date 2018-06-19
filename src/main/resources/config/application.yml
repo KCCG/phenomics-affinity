@@ -2,6 +2,9 @@ spring:
   datasources:
     diseases:
       filename: mondoAffinityIndex.json
+    drugs:
+      filename: drugBankAffinityIndex.json
+
 
 logging:
   path: ./logs/
