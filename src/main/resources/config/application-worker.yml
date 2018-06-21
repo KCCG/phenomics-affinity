@@ -1,0 +1,18 @@
+spring:
+  datasources:
+    diseases:
+      filename: mondoAffinityIndex.json
+    drugs:
+      filename: drugBankAffinityIndex.json
+
+logging:
+  path: ./logs/
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %p | source= %c{1.} | %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %p | stackName=phenomics | appName=affinity | source= %c{1.} | %msg%n"
+  level:
+    root: WARN
+    au.org.garvan.kccg.affinity: INFO
+
+server:
+    port: 9020
