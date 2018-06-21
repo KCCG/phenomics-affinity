@@ -1,0 +1,58 @@
+{
+    "containerDefinitions": [
+        {
+            "dnsSearchDomains": null,
+            "logConfiguration": null,
+            "entryPoint": null,
+            "portMappings": [
+                {
+                    "hostPort": 9025,
+                    "protocol": "tcp",
+                    "containerPort": 9020
+                }
+            ],
+            "command": null,
+            "linuxParameters": null,
+            "cpu": 256,
+            "environment": [],
+            "ulimits": null,
+            "dnsServers": null,
+            "mountPoints": [
+        {
+          "sourceVolume": "springlogs",
+          "containerPath": "/logs"
+        }
+
+      ],
+            "workingDirectory": null,
+            "dockerSecurityOptions": null,
+            "memory": 2048,
+            "memoryReservation": null,
+            "volumesFrom": [],
+            "image": "254144944163.dkr.ecr.ap-southeast-2.amazonaws.com/phenomics-prod:affinity-worker",
+            "disableNetworking": null,
+            "essential": true,
+            "links": null,
+            "hostname": null,
+            "extraHosts": null,
+            "user": null,
+            "readonlyRootFilesystem": null,
+            "dockerLabels": null,
+            "privileged": null,
+            "name": "phenomics-affinity-prod-container-w-5"
+        }
+    ],
+    "taskRoleArn": null,
+    "family": "phenomics-affinity-task-worker5",
+    "networkMode": null,
+    "volumes": [
+    {
+      "name": "springlogs",
+      "host": {
+        "sourcePath": "/var/log/affinity-worker5/"
+      }
+    }
+
+  ],
+    "placementConstraints": []
+}
