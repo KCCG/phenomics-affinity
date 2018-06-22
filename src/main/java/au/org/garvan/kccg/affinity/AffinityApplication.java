@@ -34,7 +34,7 @@ public class AffinityApplication {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(regex("/annotation"))
+                .paths(regex("/annotation.*"))
                 .build();
     }
 
@@ -46,8 +46,8 @@ public class AffinityApplication {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Phenomics Affinity")
-                .description("<p>This service is part of concept mining framework.</p> <p> It is responsible for tagging diseases for the time being. ")
-                .version("V1.0")
+                .description("<p>This service is part of concept mining framework.</p> <p> It is responsible for tagging diseases and drugs for the time being. ")
+                .version("V1.5")
                 .build();
     }
 

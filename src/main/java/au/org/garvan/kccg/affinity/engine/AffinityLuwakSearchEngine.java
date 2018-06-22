@@ -1,6 +1,7 @@
 package au.org.garvan.kccg.affinity.engine;
 
 import au.org.garvan.kccg.affinity.engine.OntologyQueriesLoader.OntologyQueriesLoader;
+import au.org.garvan.kccg.affinity.engine.cache.AnnotationHitCache;
 import au.org.garvan.kccg.affinity.model.AnnotationHit;
 import au.org.garvan.kccg.affinity.model.AnnotationTerm;
 import au.org.garvan.kccg.affinity.model.Article;
@@ -9,6 +10,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.store.RAMDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import uk.co.flax.luwak.*;
 import uk.co.flax.luwak.matchers.*;
@@ -112,6 +114,61 @@ public class AffinityLuwakSearchEngine {
 //            logHitDetails(annotationHits);
 
             return annotationHits;
+
+        } catch (RuntimeException | IOException ex) {
+            log.error("Error matching", ex);
+            throw new RuntimeException(ex);
+        }
+    }
+
+
+    @Async
+    public void matchDocumentAsync(Article anArticle) {
+        log.info("Processing individual article asynchronously:" + anArticle.getArticleID());
+        InputDocument document = InputDocument.builder(anArticle.getArticleID())
+                .addField(DEFAULT_FIELD, anArticle.getArticleAbstract(), standardAnalyzer)
+                .addField(QUERY_BANK_FILTER, "MONDO", standardAnalyzer)
+                .build();
+
+
+        try {
+            List<AnnotationHit> annotationHits = new ArrayList<>();
+
+            masterLuwakMonitor.match(document, defaultHighlighterMatcher)
+                    .forEach(queryMatch -> {
+                        if (!queryMatch.getMatches().isEmpty()) {
+                            queryMatch.getMatches()
+                                    .stream()
+                                    .forEach(match -> {
+                                        try {
+                                            AnnotationHit tempHit = new AnnotationHit();
+                                            tempHit.setAnnotationID(match.getQueryId());
+                                            if (match.error == null) {
+                                                Set hits = match.getHits().get(DEFAULT_FIELD);
+                                                for (Object hitObj : hits) {
+                                                    HighlightsMatch.Hit hit = (HighlightsMatch.Hit) hitObj;
+                                                    AnnotationTerm tempTerm = new AnnotationTerm(hit.startPosition, hit.endPosition, hit.startOffset, hit.endOffset);
+                                                    tempHit.getHits().add(tempTerm);
+                                                }
+                                            }
+                                            else {
+                                                AnnotationTerm tempTerm = new AnnotationTerm(-1, -1, -1, -1);
+                                                tempHit.getHits().add(tempTerm);
+                                            }
+
+                                            annotationHits.add(tempHit);
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    });
+                        }
+                    });
+
+            log.info( format("Article ID:%s matched with total matched queries:%d. Total queries count:%d", anArticle.getArticleID(), annotationHits.size(),masterLuwakMonitor.getQueryCount() ));
+
+            AnnotationHitCache.putArticles(anArticle.getArticleID(), annotationHits);
 
         } catch (RuntimeException | IOException ex) {
             log.error("Error matching", ex);
