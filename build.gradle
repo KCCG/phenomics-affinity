@@ -62,7 +62,7 @@ task buildDockerWorker(type: Docker) {
         from jar
         rename {'app.jar'}
     }
-    entryPoint(['java', '-Djava.security.egd=file:/dev/./urandom', '-Xmx2048m' , '-Dspring.profiles.active=worker', '-jar', '/app.jar' ])
+    entryPoint(['java', '-Djava.security.egd=file:/dev/./urandom', '-Xmx2800m' , '-Dspring.profiles.active=worker', '-jar', '/app.jar' ])
     exposePort(9020)
 }
 
